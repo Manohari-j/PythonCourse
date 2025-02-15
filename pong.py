@@ -1,10 +1,13 @@
 import turtle
-
+# In turtle center is the origin. Just like graph
 score_a = 0
 score_b = 0
+
+PlayerA = "Madhav"
+PlayerB = "Mano"
 win = turtle.Screen()
 win.setup(800, 600)
-win.bgcolor("Orange")
+win.bgcolor("green")
 win.title("Pong Game")
 win.tracer(0)  # to avoid center to either side animation
 
@@ -44,7 +47,7 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0,260)
-pen.write("Player A: 0 Player B: 0",align = "center", font=("Ariel",24,"normal") )
+pen.write("{}: 0 {}: 0".format(PlayerA,PlayerB),align = "center", font=("Ariel",24,"normal") )
 
 
 # moving paddles
@@ -75,6 +78,11 @@ def right_paddle_down():
         right_paddle.sety(newy)
     # right_paddle.sety(right_paddle.ycor() - 20)
 
+def start_game():
+    score_a = score_b = 0
+    pen.clear()
+    pen.write("{}: {} {}: {}".format(PlayerA, score_a, PlayerB, score_b), align="center", font=("Ariel", 24, "normal"))
+
 
 win.listen()
 win.onkeypress(left_paddle_up, 'w')
@@ -90,6 +98,8 @@ while True:
     ball.sety(ball.ycor()+ball.dy)
     # ball-wall collision
     # if collided in right wall, A will get point and vice versa
+
+
     # top wall
     if ball.ycor()>290:
         ball.sety(290)
@@ -104,7 +114,7 @@ while True:
         ball.dx *= -1
         score_a += 1
         pen.clear()
-        pen.write("Player A: {} Player B: {}".format(score_a,score_b), align="center", font=("Ariel", 24, "normal"))
+        pen.write("{}: {} {}: {}".format(PlayerA,score_a,PlayerB,score_b), align="center", font=("Ariel", 24, "normal"))
 
     # left wall
     if ball.xcor()<(-390):
@@ -112,7 +122,7 @@ while True:
         ball.dx *= -1
         score_b +=1
         pen.clear()
-        pen.write("Player A: {} Player B: {}".format(score_a,score_b), align="center", font=("Ariel", 24, "normal"))
+        pen.write("{}: {} {}: {}".format(PlayerA,score_a,PlayerB,score_b), align="center", font=("Ariel", 24, "normal"))
 
     # Collision with paddle
     if ball.xcor() > 370 and right_paddle.ycor() - 50 < ball.ycor() < right_paddle.ycor() + 50:
@@ -121,6 +131,21 @@ while True:
     if ball.xcor() < -370 and left_paddle.ycor() - 50 < ball.ycor() < left_paddle.ycor() + 50:
         ball.setx(-360)
         ball.dx *= -1
+
+    # If score >= 5 then declare the winner and end the game
+    if score_a >=5:
+        pen.clear()
+        pen.write("{} won the game".format(PlayerA), align="center", font=("Ariel", 24, "normal"))
+        win.onscreenclick(start_game)
+        win.mainloop()
+    if score_b >= 5:
+        pen.clear()
+        pen.write("{} won the game".format(PlayerB), align="center", font=("Ariel", 24, "normal"))
+        win.onscreenclick(start_game)
+        win.mainloop()
+
+
+
 
 
 
